@@ -27,7 +27,13 @@ public class Slicer : MonoBehaviour
             previousMousePos = Input.mousePosition;
             Vector3 world_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 world_pos2 = Camera.main.cameraToWorldMatrix * Input.mousePosition;
-            cutPlane.position = new Vector3(world_pos2.x, 1, world_pos2.z);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                cutPlane.position = hit.point + cutPlane.right * -0.5f;
+            }
+            //cutPlane.position = new Vector3(world_pos.x, world_pos.y, world_pos.z);
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -42,7 +48,7 @@ public class Slicer : MonoBehaviour
 
             RotatePlane();
         }
-        
+
     }
 
     public void Slice()
